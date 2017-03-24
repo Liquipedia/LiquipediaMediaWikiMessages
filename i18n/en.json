@@ -1,0 +1,42 @@
+{
+	"@metadata": {
+		"authors": [
+			"Alex Winkler"
+		]
+	},
+	"liquipediamediawikimessages": "LiquipediaMediaWikiMessages",
+	"liquipediamediawikimessages-desc": "Globally overwrite message keys for all Liquipedia wikis",
+
+	"liquipediamediawikimessages-add-new-message-link": "Create new entry",
+	"liquipediamediawikimessages-add-new-message": "Add new message",
+	"liquipediamediawikimessages-message": "Message name:",
+	"liquipediamediawikimessages-message-helper": "For example, this would be \"Copyrightwarning\" to change the text under the edit box.",
+	"liquipediamediawikimessages-value": "Message text:",
+	"liquipediamediawikimessages-value-helper": "This would be the text you want to show up.",
+	"liquipediamediawikimessages-create-button": "Create message",
+	"liquipediamediawikimessages-add-new-message-success": "New message added!",
+	"liquipediamediawikimessages-add-new-message-empty": "Neither message name nor message value can be empty!",
+	"liquipediamediawikimessages-add-new-message-error-duplicate": "A message with this name already exists, use the edit function!",
+	"liquipediamediawikimessages-add-new-message-error-unknown": "An unknown database error has occured trying to create this message!",
+
+	"liquipediamediawikimessages-edit-message": "Edit message",
+	"liquipediamediawikimessages-edit-button": "Edit message",
+	"liquipediamediawikimessages-edit-message-nonexistent": "The message you want to edit does not exist!",
+	"liquipediamediawikimessages-edit-message-success": "The message has successfully been edited!",
+
+	"liquipediamediawikimessages-delete-message": "Delete message",
+	"liquipediamediawikimessages-delete-message-nonexistent": "The message you want to delete does not exist!",
+	"liquipediamediawikimessages-delete-message-confirm": "Do you really want to delete this message? You will not be able to get it back!",
+	"liquipediamediawikimessages-delete-message-delete-button": "Delete message",
+	"liquipediamediawikimessages-delete-message-success": "Message successfully deleted!",
+
+	"liquipediamediawikimessages-all-messages": "All messages",
+
+	"liquipediamediawikimessages-column-id": "ID",
+	"liquipediamediawikimessages-column-name": "Name",
+	"liquipediamediawikimessages-column-value": "Value",
+	"liquipediamediawikimessages-column-edit": "Edit",
+	"liquipediamediawikimessages-column-delete": "Delete",
+
+	"specialpages-group-liquipedia": "Liquipedia"
+}

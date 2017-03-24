@@ -1,0 +1,45 @@
+{
+	"name": "LiquipediaMediaWikiMessages",
+	"version": "1.0",
+	"author": [
+		"[http://fo-nttax.de Alex Winkler]"
+	],
+	"url": "http://wiki.teamliquid.net/",
+	"descriptionmsg": "liquipediamediawikimessages-desc",
+	"license-name": "MIT",
+	"type": "parserhooks",
+	"requires": {
+		"MediaWiki": ">= 1.25.0"
+	},
+	"MessagesDirs": {
+		"LiquipediaMediaWikiMessages": [
+			"i18n"
+		]
+	},
+	"AutoloadClasses": {
+		"LiquipediaMediaWikiMessagesHooks": "LiquipediaMediaWikiMessagesHooks.php",
+		"LiquipediaMediaWikiMessagesHelper": "LiquipediaMediaWikiMessagesHelper.php",
+		"SpecialLiquipediaMediaWikiMessages": "SpecialLiquipediaMediaWikiMessages.php"
+	},
+	"Hooks": {
+		"MessagesPreLoad": [
+			"LiquipediaMediaWikiMessagesHooks::onMessagesPreLoad"
+		]
+	},
+	"SpecialPages": {
+		"LiquipediaMediaWikiMessages": "SpecialLiquipediaMediaWikiMessages"
+	},
+	"ResourceModules": {
+		"ext.liquipediamediawikimessages.SpecialPage": {
+			"styles": [
+				"SpecialLiquipediaMediaWikiMessages.css"
+			],
+			"position": "top"
+		}
+	},
+	"ResourceFileModulePaths": {
+		"localBasePath": "",
+		"remoteExtPath": "LiquipediaMediaWikiMessages"
+	},
+	"manifest_version": 1
+}
