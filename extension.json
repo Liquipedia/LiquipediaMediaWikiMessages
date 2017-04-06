@@ -16,6 +16,9 @@
 			"i18n"
 		]
 	},
+	"ExtensionMessagesFiles": {
+		"LiquipediaMediaWikiMessagesAlias": "LiquipediaMediaWikiMessagesAlias.php"
+	},
 	"AutoloadClasses": {
 		"LiquipediaMediaWikiMessagesHooks": "LiquipediaMediaWikiMessagesHooks.php",
 		"LiquipediaMediaWikiMessagesHelper": "LiquipediaMediaWikiMessagesHelper.php",
