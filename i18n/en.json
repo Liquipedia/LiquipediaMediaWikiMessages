@@ -38,5 +38,6 @@
 	"liquipediamediawikimessages-column-edit": "Edit",
 	"liquipediamediawikimessages-column-delete": "Delete",
 
-	"specialpages-group-liquipedia": "Liquipedia"
+	"specialpages-group-liquipedia": "Liquipedia",
+	"action-editinterface": "edit interface messages"
 }
