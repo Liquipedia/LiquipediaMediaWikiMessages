@@ -4,6 +4,9 @@ class LiquipediaMediaWikiMessagesHooks {
 	public static function onMessagesPreLoad( $title, &$message ) {
 		$tablename = LiquipediaMediaWikiMessagesHelper::getTableName();
 		$dbo = LiquipediaMediaWikiMessagesHelper::getDBO();
+		if($dbo == null) {
+			return;
+		}
 		$sql = "SELECT * FROM `" . $tablename . "` WHERE `messagename` = :messagename";
 		$pdostatement = $dbo->prepare( $sql );
 		$pdostatement->execute( [':messagename' => $title] );
