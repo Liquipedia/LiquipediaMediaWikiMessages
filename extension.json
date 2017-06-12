@@ -7,7 +7,7 @@
 	"url": "http://wiki.teamliquid.net/",
 	"descriptionmsg": "liquipediamediawikimessages-desc",
 	"license-name": "MIT",
-	"type": "parserhooks",
+	"type": "specialpage",
 	"requires": {
 		"MediaWiki": ">= 1.25.0"
 	},
