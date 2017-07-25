@@ -8,8 +8,8 @@ class LiquipediaMediaWikiMessagesHooks {
 			$dbr = wfGetDB( DB_REPLICA, '', $wgDBname );
 			$res = $dbr->select( $tablename, ['messagevalue'], ['messagename' => $title] );
 			if( $res->numRows() === 1 ) {
-				$row = $res->fetchObject();
-				$message = $row->messagevalue;
+				$obj = $res->fetchObject();
+				$message = $obj->messagevalue;
 			}
 		} catch(Exception $e) {
 			//echo $e->getMessage();
