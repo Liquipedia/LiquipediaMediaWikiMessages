@@ -6,12 +6,12 @@ class LiquipediaMediaWikiMessagesHooks {
 		$tablename = LiquipediaMediaWikiMessagesHelper::getTableName();
 		try {
 			$dbr = wfGetDB( DB_REPLICA, '', $wgDBname );
-			$res = $dbr->select( $tablename, ['messagevalue'], ['messagename' => $title] );
+			$res = $dbr->select( $tablename, [ 'messagevalue' ], [ 'messagename' => $title ] );
 			if( $res->numRows() === 1 ) {
 				$obj = $res->fetchObject();
 				$message = $obj->messagevalue;
 			}
-		} catch(Exception $e) {
+		} catch( Exception $e ) {
 			//echo $e->getMessage();
 		}
 	}
