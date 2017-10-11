@@ -11,6 +11,7 @@ class LiquipediaMediaWikiMessagesHooks {
 				$obj = $res->fetchObject();
 				$message = $obj->messagevalue;
 			}
+			$res->free();
 		} catch( Exception $e ) {
 			//echo $e->getMessage();
 		}
