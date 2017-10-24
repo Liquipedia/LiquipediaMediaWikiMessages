@@ -21,7 +21,6 @@
 	},
 	"AutoloadClasses": {
 		"LiquipediaMediaWikiMessagesHooks": "LiquipediaMediaWikiMessagesHooks.php",
-		"LiquipediaMediaWikiMessagesHelper": "LiquipediaMediaWikiMessagesHelper.php",
 		"SpecialLiquipediaMediaWikiMessages": "SpecialLiquipediaMediaWikiMessages.php"
 	},
 	"Hooks": {
