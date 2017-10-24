@@ -67,8 +67,9 @@ class SpecialLiquipediaMediaWikiMessages extends SpecialPage {
 			</form>' );
 		} elseif( ( $params[0] == 'edit' ) && isset( $params[1] ) && !empty( $params[1] ) ) {
 			$output->addWikiText( '<h2>' . $this->msg( 'liquipediamediawikimessages-edit-message' )->text() . '</h2>' );
-			$result = get_object_vars( $dbw->selectRow( 'liquipedia_mediawiki_messages', '*', array( 'id' => $params[1] ) ) );
-			if( $result ) {
+			$res = $dbw->selectRow( 'liquipedia_mediawiki_messages', '*', array( 'id' => $params[1] ) );
+			if( $res ) {
+				$result = get_object_vars( $res );
 				$reqValue = $result['messagevalue'];
 				if ( $request->getBool( 'editmessage' ) ) {
 					$reqValue = $request->getText( 'reqvalue' );
@@ -104,12 +105,13 @@ class SpecialLiquipediaMediaWikiMessages extends SpecialPage {
 				$dbw->delete( 'liquipedia_mediawiki_messages', array( 'id' => $params[1] ) );
 				$output->addWikiText( '<div class="alert alert-success">' . $this->msg( 'liquipediamediawikimessages-delete-message-success' )->text() . '</div>' );
 			} else {
-				$result = get_object_vars( $dbw->selectRow( 'liquipedia_mediawiki_messages', '*', array( 'id' => $params[1] ) ) );
-				if( $result ) {
+				$res = $dbw->selectRow( 'liquipedia_mediawiki_messages', '*', array( 'id' => $params[1] ) );
+				if( $res ) {
+					$result = get_object_vars( $res );
 					$output->addWikiText( '<div class="alert alert-danger">' . $this->msg( 'liquipediamediawikimessages-delete-message-confirm' )->text() . '</div>' );
 					$output->addWikiText( '<div>' . $this->msg( 'liquipediamediawikimessages-message' )->text() . ' <code>' . $result['messagename'] . '</code></div>' );
 					$output->addWikiText( '<div>' . $this->msg( 'liquipediamediawikimessages-value' )->text() . ' <pre>' . $result['messagevalue'] . '</pre></div>' );
-					$output->addWikiText( '<form name="deleteliquipediamediawikimessagesmessage" method="post"><input class="btn btn-danger" type="submit" name="deletemessage" value="' . $this->msg( 'liquipediamediawikimessages-delete-message-delete-button' )->text() . '"></form>' );
+					$output->addHTML( '<form name="deleteliquipediamediawikimessagesmessage" method="post"><input class="btn btn-danger" type="submit" name="deletemessage" value="' . $this->msg( 'liquipediamediawikimessages-delete-message-delete-button' )->text() . '"></form>' );
 				} else {
 					$output->addWikiText( '<div class="alert alert-warning">' . $this->msg( 'liquipediamediawikimessages-delete-message-nonexistent' )->text() . '</div>' );
 				}
