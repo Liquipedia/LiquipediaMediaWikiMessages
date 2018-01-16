@@ -9,20 +9,16 @@ class LiquipediaMediaWikiMessagesHooks {
 		} elseif( isset( self::$messageCache[$title] ) ) {
 			$message = self::$messageCache[$title];
 		} else {
-			try {
-				$dbr = wfGetDB( DB_REPLICA, '', $wgDBname );
-				$res = $dbr->select( 'liquipedia_mediawiki_messages', [ 'messagevalue' ], [ 'messagename' => $title ] );
-				if( $res->numRows() === 1 ) {
-					$obj = $res->fetchObject();
-					self::$messageCache[$title] = $obj->messagevalue;
-					$message = $obj->messagevalue;
-				} else {
-					self::$messageCache[$title] = false;
-				}
-				$res->free();
-			} catch( Exception $e ) {
-				//echo $e->getMessage();
+			$dbr = wfGetDB( DB_REPLICA, '', $wgDBname );
+			$res = $dbr->select( 'liquipedia_mediawiki_messages', [ 'messagevalue' ], [ 'messagename' => $title ] );
+			if( $res->numRows() === 1 ) {
+				$obj = $res->fetchObject();
+				self::$messageCache[$title] = $obj->messagevalue;
+				$message = $obj->messagevalue;
+			} else {
+				self::$messageCache[$title] = false;
 			}
+			$res->free();
 		}
 	}
 }
