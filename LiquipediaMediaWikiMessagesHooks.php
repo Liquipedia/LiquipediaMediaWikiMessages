@@ -5,6 +5,9 @@ class LiquipediaMediaWikiMessagesHooks {
 	private static $messageCache = array();
 
 	public static function onMessagesPreLoad( $title, &$message, $code ) {
+		if ( $code === 'qqx' ) {
+			return;
+		}
 		global $wgDBname;
 		$bareTitle = str_replace( '/' . $code, '', $title );
 		$language = $code;
