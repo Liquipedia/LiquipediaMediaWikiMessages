@@ -32,8 +32,6 @@ class LiquipediaMediaWikiMessagesHooks {
 					self::$messageCache[ $usedTitle ] = $obj->messagevalue;
 					$message = $obj->messagevalue;
 					$found = true;
-				} else {
-					self::$messageCache[ $usedTitle ] = false;
 				}
 				$res->free();
 				if ( $last ) {
@@ -46,6 +44,9 @@ class LiquipediaMediaWikiMessagesHooks {
 					$last = true;
 				}
 			}
+		}
+		if ( !$found ) {
+			self::$messageCache[ $title ] = false;
 		}
 	}
 
