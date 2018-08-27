@@ -2,7 +2,7 @@
 
 class LiquipediaMediaWikiMessagesHooks {
 
-	private static $messageCache = array();
+	private static $messageCache = [];
 
 	public static function onMessagesPreLoad( $title, &$message, $code ) {
 		if ( $code === 'qqx' ) {
