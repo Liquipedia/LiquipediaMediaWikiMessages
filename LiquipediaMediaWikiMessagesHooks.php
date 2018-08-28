@@ -13,6 +13,7 @@ class LiquipediaMediaWikiMessagesHooks {
 		$languages = Language::getFallbacksFor( $code );
 		array_unshift( $languages, $code );
 		$dbr = wfGetDB( DB_REPLICA, '', $wgDBname );
+		$found = false;
 		for ( $i = 0; $i <= count( $languages ); $i++ ) {
 			if ( $i < count( $languages ) ) {
 				$usedTitle = $bareTitle . '/' . $languages[ $i ];
@@ -31,11 +32,12 @@ class LiquipediaMediaWikiMessagesHooks {
 					self::$messageCache[ $usedTitle ] = $obj->messagevalue;
 					$message = $obj->messagevalue;
 					return;
-				} else {
-					self::$messageCache[ $usedTitle ] = false;
 				}
 				$res->free();
 			}
+		}
+		if ( !$found ) {
+			self::$messageCache[ $title ] = false;
 		}
 	}
 
