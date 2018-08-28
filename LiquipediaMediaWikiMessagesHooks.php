@@ -35,7 +35,7 @@ class LiquipediaMediaWikiMessagesHooks {
 				}
 				$res->free();
 				if ( $last ) {
-					break;
+					return;
 				}
 				$languages = Language::getFallbacksFor( $language );
 				if ( count( $languages ) > 0 ) {
