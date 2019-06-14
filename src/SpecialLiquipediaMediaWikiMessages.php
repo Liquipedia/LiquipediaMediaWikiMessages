@@ -79,7 +79,10 @@ class SpecialLiquipediaMediaWikiMessages extends SpecialPage {
 				$result = get_object_vars( $res );
 				$reqValue = $result[ 'messagevalue' ];
 				if ( $request->getBool( 'editmessage' ) ) {
-					$cache->delete( $cache->makeGlobalKey( $cacheKeyPrefix, trim( $dbw->select( $tablename, '*', [ 'id' => $params[ 1 ] ] )->fetchObject()->messagename ) ) );
+					$message = $dbw->select( $tablename, '*', [ 'id' => $params[ 1 ] ] )->fetchObject();
+					if ( !is_null( $message ) ) {
+						$cache->delete( $cache->makeGlobalKey( $cacheKeyPrefix, trim( $message->messagename ) ) );
+					}
 					$reqValue = $request->getText( 'reqvalue' );
 					$dbw->update( $tablename, [ 'messagevalue' => $reqValue ], [ 'id' => $params[ 1 ] ] );
 					$output->addWikiText( '<div class="alert alert-success">' . $this->msg( 'liquipediamediawikimessages-edit-message-success' )->text() . '</div>' );
@@ -110,7 +113,10 @@ class SpecialLiquipediaMediaWikiMessages extends SpecialPage {
 		} elseif ( ( $params[ 0 ] == 'delete' ) && isset( $params[ 1 ] ) && !empty( $params[ 1 ] ) ) {
 			$output->addWikiText( '<h2>' . $this->msg( 'liquipediamediawikimessages-delete-message' )->text() . '</h2>' );
 			if ( $request->getBool( 'deletemessage' ) ) {
-				$cache->delete( $cache->makeGlobalKey( $cacheKeyPrefix, trim( $dbw->select( $tablename, '*', [ 'id' => $params[ 1 ] ] )->fetchObject()->messagename ) ) );
+				$message = $dbw->select( $tablename, '*', [ 'id' => $params[ 1 ] ] )->fetchObject();
+				if ( !is_null( $message ) ) {
+					$cache->delete( $cache->makeGlobalKey( $cacheKeyPrefix, trim( $message->messagename ) ) );
+				}
 				$dbw->delete( $tablename, [ 'id' => $params[ 1 ] ] );
 				$output->addWikiText( '<div class="alert alert-success">' . $this->msg( 'liquipediamediawikimessages-delete-message-success' )->text() . '</div>' );
 			} else {
