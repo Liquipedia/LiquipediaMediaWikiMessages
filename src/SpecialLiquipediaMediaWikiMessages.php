@@ -1,5 +1,9 @@
 <?php
 
+namespace Liquipedia\LiquipediaMediaWikiMessages;
+
+use SpecialPage;
+
 class SpecialLiquipediaMediaWikiMessages extends SpecialPage {
 
 	function __construct() {
@@ -23,18 +27,21 @@ class SpecialLiquipediaMediaWikiMessages extends SpecialPage {
 		$this->setHeaders();
 		$request = $this->getRequest();
 		$dbw = wfGetDB( DB_MASTER, '', $wgDBname );
+		$cacheKeyPrefix = Helper::getCacheKeyPrefix();
+		$cache = wfGetMessageCacheStorage();
 		if ( $params[ 0 ] == 'new' ) {
 			$output->addWikiText( '<h2>' . $this->msg( 'liquipediamediawikimessages-add-new-message' )->text() . '</h2>' );
 			$reqMessage = ucfirst( strtolower( $request->getText( 'reqmessage' ) ) );
 			$reqValue = $request->getText( 'reqvalue' );
 			if ( $request->getBool( 'createnew' ) ) {
 				if ( !empty( $reqMessage ) && !empty( $reqValue ) ) {
+					$cache->delete( $cache->makeGlobalKey( $cacheKeyPrefix, $reqMessage ) );
 					try {
-						$dbw->insert( 'liquipedia_mediawiki_messages', array( 'messagename' => $reqMessage, 'messagevalue' => $reqValue ) );
+						$dbw->insert( $tablename, [ 'messagename' => $reqMessage, 'messagevalue' => $reqValue ] );
 						$output->addWikiText( '<div class="alert alert-success">' . $this->msg( 'liquipediamediawikimessages-add-new-message-success' )->text() . '</div>' );
 						$reqMessage = '';
 						$reqValue = '';
-					} catch ( PDOException $e ) {
+					} catch ( \PDOException $e ) {
 						if ( $e->getCode() == 23000 ) {
 							$output->addWikiText( '<div class="alert alert-danger">' . $this->msg( 'liquipediamediawikimessages-add-new-message-error-duplicate' )->text() . '</div>' );
 						} else {
@@ -67,13 +74,14 @@ class SpecialLiquipediaMediaWikiMessages extends SpecialPage {
 			</form>' );
 		} elseif ( ( $params[ 0 ] == 'edit' ) && isset( $params[ 1 ] ) && !empty( $params[ 1 ] ) ) {
 			$output->addWikiText( '<h2>' . $this->msg( 'liquipediamediawikimessages-edit-message' )->text() . '</h2>' );
-			$res = $dbw->selectRow( 'liquipedia_mediawiki_messages', '*', array( 'id' => $params[ 1 ] ) );
+			$res = $dbw->selectRow( $tablename, '*', [ 'id' => $params[ 1 ] ] );
 			if ( $res ) {
 				$result = get_object_vars( $res );
 				$reqValue = $result[ 'messagevalue' ];
 				if ( $request->getBool( 'editmessage' ) ) {
+					$cache->delete( $cache->makeGlobalKey( $cacheKeyPrefix, trim( $dbw->select( $tablename, '*', [ 'id' => $params[ 1 ] ] )->fetchObject()->messagename ) ) );
 					$reqValue = $request->getText( 'reqvalue' );
-					$dbw->update( 'liquipedia_mediawiki_messages', array( 'messagevalue' => $reqValue ), array( 'id' => $params[ 1 ] ) );
+					$dbw->update( $tablename, [ 'messagevalue' => $reqValue ], [ 'id' => $params[ 1 ] ] );
 					$output->addWikiText( '<div class="alert alert-success">' . $this->msg( 'liquipediamediawikimessages-edit-message-success' )->text() . '</div>' );
 				}
 				$output->addHTML( '<form name="newliquipediamediawikimessagesmessage" method="post">
@@ -102,10 +110,11 @@ class SpecialLiquipediaMediaWikiMessages extends SpecialPage {
 		} elseif ( ( $params[ 0 ] == 'delete' ) && isset( $params[ 1 ] ) && !empty( $params[ 1 ] ) ) {
 			$output->addWikiText( '<h2>' . $this->msg( 'liquipediamediawikimessages-delete-message' )->text() . '</h2>' );
 			if ( $request->getBool( 'deletemessage' ) ) {
-				$dbw->delete( 'liquipedia_mediawiki_messages', array( 'id' => $params[ 1 ] ) );
+				$cache->delete( $cache->makeGlobalKey( $cacheKeyPrefix, trim( $dbw->select( $tablename, '*', [ 'id' => $params[ 1 ] ] )->fetchObject()->messagename ) ) );
+				$dbw->delete( $tablename, [ 'id' => $params[ 1 ] ] );
 				$output->addWikiText( '<div class="alert alert-success">' . $this->msg( 'liquipediamediawikimessages-delete-message-success' )->text() . '</div>' );
 			} else {
-				$res = $dbw->selectRow( 'liquipedia_mediawiki_messages', '*', array( 'id' => $params[ 1 ] ) );
+				$res = $dbw->selectRow( $tablename, '*', [ 'id' => $params[ 1 ] ] );
 				if ( $res ) {
 					$result = get_object_vars( $res );
 					$output->addWikiText( '<div class="alert alert-danger">' . $this->msg( 'liquipediamediawikimessages-delete-message-confirm' )->text() . '</div>' );
@@ -119,7 +128,7 @@ class SpecialLiquipediaMediaWikiMessages extends SpecialPage {
 		}
 		$output->addWikiText( '<h2>' . $this->msg( 'liquipediamediawikimessages-all-messages' )->text() . '</h2>' );
 		$output->addWikiText( '<div>[[Special:LiquipediaMediaWikiMessages/new|' . $this->msg( 'liquipediamediawikimessages-add-new-message-link' )->text() . ']]</div>' );
-		$res = $dbw->select( 'liquipedia_mediawiki_messages', '*', '' );
+		$res = $dbw->select( $tablename, '*', '' );
 		$table = '{| class="wikitable sortable"' . "\n";
 		$table .= "|-\n!" . $this->msg( 'liquipediamediawikimessages-column-id' )->text() . "\n!" . $this->msg( 'liquipediamediawikimessages-column-name' )->text() . "\n!" . $this->msg( 'liquipediamediawikimessages-column-value' )->text() . "\n!" . $this->msg( 'liquipediamediawikimessages-column-edit' )->text() . "\n!" . $this->msg( 'liquipediamediawikimessages-column-delete' )->text() . "\n";
 		while ( $row = $res->fetchRow() ) {

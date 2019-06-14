@@ -1,10 +1,10 @@
 {
 	"name": "LiquipediaMediaWikiMessages",
-	"version": "1.0",
+	"version": "2.0.0",
 	"author": [
 		"[https://fo-nttax.de Alex Winkler]"
 	],
-	"url": "http://liquipedia.net/",
+	"url": "https://liquipedia.net/",
 	"descriptionmsg": "liquipediamediawikimessages-desc",
 	"license-name": "MIT",
 	"type": "specialpage",
@@ -17,24 +17,23 @@
 		]
 	},
 	"ExtensionMessagesFiles": {
-		"LiquipediaMediaWikiMessagesAlias": "LiquipediaMediaWikiMessagesAlias.php"
+		"LiquipediaMediaWikiMessagesAlias": "i18n/LiquipediaMediaWikiMessagesAlias.php"
 	},
-	"AutoloadClasses": {
-		"LiquipediaMediaWikiMessagesHooks": "LiquipediaMediaWikiMessagesHooks.php",
-		"SpecialLiquipediaMediaWikiMessages": "SpecialLiquipediaMediaWikiMessages.php"
+	"AutoloadNamespaces": {
+		"Liquipedia\\LiquipediaMediaWikiMessages\\": "src/"
 	},
 	"Hooks": {
 		"MessagesPreLoad": [
-			"LiquipediaMediaWikiMessagesHooks::onMessagesPreLoad"
+			"Liquipedia\\LiquipediaMediaWikiMessages\\Hooks::onMessagesPreLoad"
 		]
 	},
 	"SpecialPages": {
-		"LiquipediaMediaWikiMessages": "SpecialLiquipediaMediaWikiMessages"
+		"LiquipediaMediaWikiMessages": "Liquipedia\\LiquipediaMediaWikiMessages\\SpecialLiquipediaMediaWikiMessages"
 	},
 	"ResourceModules": {
 		"ext.liquipediamediawikimessages.SpecialPage": {
 			"styles": [
-				"SpecialLiquipediaMediaWikiMessages.css"
+				"resources/SpecialLiquipediaMediaWikiMessages.css"
 			],
 			"position": "top"
 		}
