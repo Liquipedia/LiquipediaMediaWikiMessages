@@ -44,6 +44,7 @@ class Hooks {
 				} );
 				if ( self::$messageCache[ $usedTitle ] !== Helper::getCacheDefaultValue() ) {
 					$message = self::$messageCache[ $usedTitle ];
+					return;
 				}
 			}
 		}
