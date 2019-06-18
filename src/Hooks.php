@@ -31,8 +31,7 @@ class Hooks {
 				return;
 			} else {
 				self::$messageCache[ $usedTitle ] = $cache->getWithSetCallback( $cache->makeGlobalKey( $cacheKeyPrefix, $usedTitle ), Helper::getCacheTTL(), function() use ( $usedTitle ) {
-					global $wgDBname;
-					$dbr = wfGetDB( DB_REPLICA, '', $wgDBname );
+					$dbr = wfGetDB( DB_REPLICA, '', \MediaWiki\MediaWikiServices::getInstance()->getMainConfig()->get( 'DBname' ) );
 					$res = $dbr->select( 'liquipedia_mediawiki_messages', [ 'messagevalue' ], [ 'messagename' => $usedTitle ] );
 					if ( $res->numRows() === 1 ) {
 						$obj = $res->fetchObject();
