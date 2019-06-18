@@ -10,10 +10,10 @@ class Helper {
 		return self::$cacheKeyPrefix;
 	}
 
-	private static $cacheTTL = 86400;
-
 	public static function getCacheTTL() {
-		return self::$cacheTTL;
+		$config = \MediaWiki\MediaWikiServices::getInstance()->getMainConfig();
+		$ttl = $config->get( 'MsgCacheExpiry' );
+		return $ttl;
 	}
 
 	private static $cacheDefaultValue = '<defaultvaluethatnooneshouldeverputin>';
