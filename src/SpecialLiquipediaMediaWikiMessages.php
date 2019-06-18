@@ -15,7 +15,6 @@ class SpecialLiquipediaMediaWikiMessages extends SpecialPage {
 	}
 
 	function execute( $par ) {
-		global $wgDBname;
 		if ( !$this->userCanExecute( $this->getUser() ) ) {
 			$this->displayRestrictionError();
 			return;
@@ -26,13 +25,13 @@ class SpecialLiquipediaMediaWikiMessages extends SpecialPage {
 		$output->addModules( 'ext.liquipediamediawikimessages.SpecialPage' );
 		$this->setHeaders();
 		$request = $this->getRequest();
-		$dbw = wfGetDB( DB_MASTER, '', $wgDBname );
+		$dbw = wfGetDB( DB_MASTER, '', $this->getConfig()->get( 'DBname' ) );
 		$cacheKeyPrefix = Helper::getCacheKeyPrefix();
 		$cache = wfGetMessageCacheStorage();
-		if ( $params[ 0 ] == 'new' ) {
+		if ( $params[ 0 ] === 'new' ) {
 			$output->addWikiText( '<h2>' . $this->msg( 'liquipediamediawikimessages-add-new-message' )->text() . '</h2>' );
-			$reqMessage = ucfirst( strtolower( $request->getText( 'reqmessage' ) ) );
-			$reqValue = $request->getText( 'reqvalue' );
+			$reqMessage = ucfirst( strtolower( trim( $request->getText( 'reqmessage' ) ) ) );
+			$reqValue = trim( $request->getText( 'reqvalue' ) );
 			if ( $request->getBool( 'createnew' ) ) {
 				if ( !empty( $reqMessage ) && !empty( $reqValue ) ) {
 					$cache->delete( $cache->makeGlobalKey( $cacheKeyPrefix, $reqMessage ) );
@@ -72,7 +71,7 @@ class SpecialLiquipediaMediaWikiMessages extends SpecialPage {
 					</tr>
 				</table>
 			</form>' );
-		} elseif ( ( $params[ 0 ] == 'edit' ) && isset( $params[ 1 ] ) && !empty( $params[ 1 ] ) ) {
+		} elseif ( ( $params[ 0 ] === 'edit' ) && isset( $params[ 1 ] ) && !empty( $params[ 1 ] ) ) {
 			$output->addWikiText( '<h2>' . $this->msg( 'liquipediamediawikimessages-edit-message' )->text() . '</h2>' );
 			$res = $dbw->selectRow( $tablename, '*', [ 'id' => $params[ 1 ] ] );
 			if ( $res ) {
@@ -110,7 +109,7 @@ class SpecialLiquipediaMediaWikiMessages extends SpecialPage {
 			} else {
 				$output->addWikiText( '<div class="alert alert-warning">' . $this->msg( 'liquipediamediawikimessages-edit-message-nonexistent' )->text() . '</div>' );
 			}
-		} elseif ( ( $params[ 0 ] == 'delete' ) && isset( $params[ 1 ] ) && !empty( $params[ 1 ] ) ) {
+		} elseif ( ( $params[ 0 ] === 'delete' ) && isset( $params[ 1 ] ) && !empty( $params[ 1 ] ) ) {
 			$output->addWikiText( '<h2>' . $this->msg( 'liquipediamediawikimessages-delete-message' )->text() . '</h2>' );
 			if ( $request->getBool( 'deletemessage' ) ) {
 				$message = $dbw->select( $tablename, '*', [ 'id' => $params[ 1 ] ] )->fetchObject();
