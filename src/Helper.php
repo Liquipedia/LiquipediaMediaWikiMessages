@@ -4,7 +4,7 @@ namespace Liquipedia\LiquipediaMediaWikiMessages;
 
 class Helper {
 
-	private static $cacheKeyPrefix = 'liquipedia_mediawiki_messages';
+	private static $cacheKeyPrefix = 'lp_mw_messages';
 
 	public static function getCacheKeyPrefix() {
 		return self::$cacheKeyPrefix;
