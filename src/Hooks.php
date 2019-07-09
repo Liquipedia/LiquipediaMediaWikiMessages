@@ -12,43 +12,34 @@ class Hooks {
 		if ( $code === 'qqx' ) {
 			return;
 		}
-		$cacheKeyPrefix = Helper::getCacheKeyPrefix();
-		$cache = wfGetMessageCacheStorage();
-
+		global $wgDBname;
 		$bareTitle = str_replace( '/' . $code, '', $title );
 		$languages = Language::getFallbacksFor( $code );
 		array_unshift( $languages, $code );
+		$dbr = wfGetDB( DB_REPLICA, '', $wgDBname );
 		for ( $i = 0; $i <= count( $languages ); $i++ ) {
 			if ( $i < count( $languages ) ) {
 				$usedTitle = $bareTitle . '/' . $languages[ $i ];
 			} else {
 				$usedTitle = $bareTitle;
 			}
-			if ( array_key_exists( $usedTitle, self::$messageCache ) && self::$messageCache[ $usedTitle ] === Helper::getCacheDefaultValue() ) {
+			if ( isset( self::$messageCache[ $usedTitle ] ) && self::$messageCache[ $usedTitle ] === false ) {
 				return;
-			} elseif ( array_key_exists( $usedTitle, self::$messageCache ) ) {
+			} elseif ( isset( self::$messageCache[ $usedTitle ] ) ) {
 				$message = self::$messageCache[ $usedTitle ];
 				return;
 			} else {
-				self::$messageCache[ $usedTitle ] = $cache->getWithSetCallback( $cache->makeGlobalKey( $cacheKeyPrefix, $usedTitle ), Helper::getCacheTTL(), function() use ( $usedTitle ) {
-					$dbr = wfGetDB( DB_REPLICA, '', \MediaWiki\MediaWikiServices::getInstance()->getMainConfig()->get( 'DBname' ) );
-					$res = $dbr->select( 'liquipedia_mediawiki_messages', [ 'messagevalue' ], [ 'messagename' => $usedTitle ] );
-					if ( $res->numRows() === 1 ) {
-						$obj = $res->fetchObject();
-						$res->free();
-						return $obj->messagevalue;
-					}
-					$res->free();
-					return Helper::getCacheDefaultValue();
-				} );
-				self::$messageCache[ $title ] = self::$messageCache[ $usedTitle ];
-				if ( self::$messageCache[ $usedTitle ] !== Helper::getCacheDefaultValue() ) {
-					$message = self::$messageCache[ $usedTitle ];
+				$res = $dbr->select( 'liquipedia_mediawiki_messages', [ 'messagevalue' ], [ 'messagename' => $usedTitle ] );
+				if ( $res->numRows() === 1 ) {
+					$obj = $res->fetchObject();
+					self::$messageCache[ $usedTitle ] = $obj->messagevalue;
+					$message = $obj->messagevalue;
 					return;
 				}
+				$res->free();
 			}
 		}
-		self::$messageCache[ $title ] = Helper::getCacheDefaultValue();
+		self::$messageCache[ $title ] = false;
 	}
 
 }
