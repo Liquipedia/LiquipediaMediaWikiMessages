@@ -3,5 +3,7 @@
 $specialPageAliases = [];
 
 $specialPageAliases[ 'en' ] = [
-	'LiquipediaMediaWikiMessages' => [ 'LiquipediaMediaWikiMessages', 'Liquipedia MediaWiki Messages', 'LPMM' ],
+	'LiquipediaMediaWikiMessages' => [
+		'LiquipediaMediaWikiMessages', 'Liquipedia MediaWiki Messages', 'LPMM'
+	],
 ];

@@ -14,7 +14,7 @@ textarea {
 	width: 13em;
 	text-align: right;
 	white-space: nowrap;
-	padding: 5px .5em;
+	padding: 5px 0.5em;
 }
 
 .input-helper {
@@ -22,10 +22,10 @@ textarea {
 	max-width: 18em;
 	color: #808080;
 	font-style: italic;
-	font-size: .9em;
-	padding: 5px .5em;
+	font-size: 0.9em;
+	padding: 5px 0.5em;
 }
 
-input[type="checkbox"] {
+input[ type='checkbox' ] {
 	margin-left: 0;
 }

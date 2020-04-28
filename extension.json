@@ -33,7 +33,7 @@
 	"ResourceModules": {
 		"ext.liquipediamediawikimessages.SpecialPage": {
 			"styles": [
-				"resources/SpecialLiquipediaMediaWikiMessages.css"
+				"resources/styles/SpecialLiquipediaMediaWikiMessages.css"
 			],
 			"position": "top"
 		}
