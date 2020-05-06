@@ -243,11 +243,11 @@ class SpecialLiquipediaMediaWikiMessages extends SpecialPage {
 			. '!' . $this->msg( 'liquipediamediawikimessages-column-delete' )->text() . "\n";
 		foreach ( $res as $row ) {
 			$table .= "|-\n|"
-				. $row[ 'id' ] . "\n|"
-				. $row[ 'messagename' ] . "\n|"
-				. '<pre>' . $row[ 'messagevalue' ] . "</pre>\n"
-				. '|[[Special:LiquipediaMediaWikiMessages/edit/' . $row[ 'id' ] . '|edit]]' . "\n"
-				. '|[[Special:LiquipediaMediaWikiMessages/delete/' . $row[ 'id' ] . '|delete]]' . "\n";
+				. $row->id . "\n|"
+				. $row->messagename . "\n|"
+				. '<pre>' . $row->messagevalue . "</pre>\n"
+				. '|[[Special:LiquipediaMediaWikiMessages/edit/' . $row->id . '|edit]]' . "\n"
+				. '|[[Special:LiquipediaMediaWikiMessages/delete/' . $row->id . '|delete]]' . "\n";
 		}
 		$table .= '|}';
 		$output->addWikiText( $table );
