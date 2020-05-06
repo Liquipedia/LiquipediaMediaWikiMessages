@@ -233,7 +233,6 @@ class SpecialLiquipediaMediaWikiMessages extends SpecialPage {
 			. $this->msg( 'liquipediamediawikimessages-add-new-message-link' )->text()
 			. ']]</div>'
 		);
-		$res = $dbw->select( $tablename, '*', '' );
 		$table = '{| class="wikitable sortable"' . "\n";
 		$table .= "|-\n"
 			. '!' . $this->msg( 'liquipediamediawikimessages-column-id' )->text() . "\n"
@@ -241,6 +240,7 @@ class SpecialLiquipediaMediaWikiMessages extends SpecialPage {
 			. '!' . $this->msg( 'liquipediamediawikimessages-column-value' )->text() . "\n"
 			. '!' . $this->msg( 'liquipediamediawikimessages-column-edit' )->text() . "\n"
 			. '!' . $this->msg( 'liquipediamediawikimessages-column-delete' )->text() . "\n";
+		$res = $dbw->select( $tablename, '*', '' );
 		foreach ( $res as $row ) {
 			$table .= "|-\n|"
 				. $row->id . "\n|"
