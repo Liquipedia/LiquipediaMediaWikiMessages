@@ -39,7 +39,7 @@
 	"liquipediamediawikimessages-column-delete": "Delete",
 
 	"log-name-liquipediamediawikimessages": "LiquipediaMediaWikiMessages log",
-	"log-description-teamtemplate": "These events track when someone globally overwrite message keys for all Liquipedia wikis",
+	"log-description-liquipediamediawikimessages": "These events track when someone globally overwrite message keys for all Liquipedia wikis",
 	"logentry-liquipediamediawikimessages-added": "$1 added message \"$4\" via $3",
 	"logentry-liquipediamediawikimessages-edited": "$1 edited message \"$4\" via $3",
 	"logentry-liquipediamediawikimessages-deleted": "$1 deleted message \"$4\" via $3",
