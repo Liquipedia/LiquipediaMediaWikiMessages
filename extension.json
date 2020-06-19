@@ -36,14 +36,6 @@
 	"SpecialPages": {
 		"LiquipediaMediaWikiMessages": "Liquipedia\\LiquipediaMediaWikiMessages\\SpecialLiquipediaMediaWikiMessages"
 	},
-	"ResourceModules": {
-		"ext.liquipediamediawikimessages.SpecialPage": {
-			"styles": [
-				"resources/styles/SpecialLiquipediaMediaWikiMessages.css"
-			],
-			"position": "top"
-		}
-	},
 	"ResourceFileModulePaths": {
 		"localBasePath": "",
 		"remoteExtPath": "LiquipediaMediaWikiMessages"

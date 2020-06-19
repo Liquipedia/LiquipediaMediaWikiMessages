@@ -32,9 +32,7 @@ class SpecialLiquipediaMediaWikiMessages extends SpecialPage {
 		$tablename = 'liquipedia_mediawiki_messages';
 		$params = explode( '/', $par );
 		$this->output = $this->getOutput();
-		$this->output->addModules( 'ext.liquipediamediawikimessages.SpecialPage' );
 		$this->setHeaders();
-		$request = $this->getRequest();
 		$dbw = wfGetDB( DB_MASTER, '', $this->getConfig()->get( 'DBname' ) );
 		# $cacheKeyPrefix = Helper::getCacheKeyPrefix();
 		# $cache = wfGetMessageCacheStorage();
