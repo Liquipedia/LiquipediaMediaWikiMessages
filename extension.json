@@ -1,6 +1,6 @@
 {
 	"name": "LiquipediaMediaWikiMessages",
-	"version": "2.0.0",
+	"version": "2.1.0",
 	"author": [
 		"[https://fo-nttax.de Alex Winkler]"
 	],
@@ -16,6 +16,12 @@
 			"i18n"
 		]
 	},
+	"LogActionsHandlers": {
+		"liquipediamediawikimessages/*": "Liquipedia\\LiquipediaMediaWikiMessages\\LogFormatter"
+	},
+	"LogTypes": [
+		"liquipediamediawikimessages"
+	],
 	"ExtensionMessagesFiles": {
 		"LiquipediaMediaWikiMessagesAlias": "i18n/LiquipediaMediaWikiMessagesAlias.php"
 	},
