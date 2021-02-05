@@ -8,6 +8,9 @@ use SpecialPage;
 
 class SpecialLiquipediaMediaWikiMessages extends SpecialPage {
 
+	/**
+	 * @var OutputPage
+	 */
 	private $output;
 
 	public function __construct() {
@@ -34,8 +37,6 @@ class SpecialLiquipediaMediaWikiMessages extends SpecialPage {
 		$this->output = $this->getOutput();
 		$this->setHeaders();
 		$dbw = wfGetDB( DB_MASTER, '', $this->getConfig()->get( 'DBname' ) );
-		# $cacheKeyPrefix = Helper::getCacheKeyPrefix();
-		# $cache = wfGetMessageCacheStorage();
 		if ( $params[ 0 ] === 'new' ) {
 			$this->addMessage();
 		} elseif ( ( $params[ 0 ] === 'edit' ) && isset( $params[ 1 ] ) && !empty( $params[ 1 ] ) ) {
@@ -114,7 +115,6 @@ class SpecialLiquipediaMediaWikiMessages extends SpecialPage {
 			$reqMessage = $formData[ 'MessageName' ];
 			$reqValue = $formData[ 'MessageValue' ];
 			$tablename = 'liquipedia_mediawiki_messages';
-			# $cache->delete( $cache->makeGlobalKey( $cacheKeyPrefix, $reqMessage ) );
 			try {
 				$dbw->insert( $tablename, [ 'messagename' => $reqMessage, 'messagevalue' => $reqValue ] );
 				$this->output->addWikiText(
@@ -213,10 +213,6 @@ class SpecialLiquipediaMediaWikiMessages extends SpecialPage {
 		$dbw = wfGetDB( DB_MASTER, '', $this->getConfig()->get( 'DBname' ) );
 		$tablename = 'liquipedia_mediawiki_messages';
 		$id = $formData[ 'MessageId' ];
-		$message = $dbw->select( $tablename, '*', [ 'id' => $id ] )->fetchObject();
-		if ( $message !== null ) {
-			# $cache->delete( $cache->makeGlobalKey( $cacheKeyPrefix, trim( $message->messagename ) ) );
-		}
 		$reqValue = $formData[ 'MessageValue' ];
 		$dbw->update( $tablename, [ 'messagevalue' => $reqValue ], [ 'id' => $id ] );
 		$this->output->addWikiText(
@@ -301,7 +297,7 @@ class SpecialLiquipediaMediaWikiMessages extends SpecialPage {
 		$dbw = wfGetDB( DB_MASTER, '', $this->getConfig()->get( 'DBname' ) );
 		$message = $dbw->select( $tablename, '*', [ 'id' => $id ] )->fetchObject();
 		if ( $message !== null ) {
-			// $cache->delete( $cache->makeGlobalKey( $cacheKeyPrefix, trim( $message->messagename ) ) );
+
 		}
 		$dbw->delete( $tablename, [ 'id' => $id ] );
 		$this->output->addWikiText(
