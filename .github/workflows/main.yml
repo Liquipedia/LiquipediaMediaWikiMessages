@@ -12,7 +12,6 @@ jobs:
     - name: Install composer dependencies
       run: composer install
 
-
     - name: Run composer tests
       run: composer test
 
