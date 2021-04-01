@@ -40,7 +40,7 @@ class Cache {
 			}
 			$res->free();
 			return [ 'value' => false ];
-		}
+			}
 		);
 		self::$valueCache[ $name ] = $result;
 		return $result[ 'value' ];

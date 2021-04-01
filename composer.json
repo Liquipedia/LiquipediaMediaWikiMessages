@@ -1,13 +1,24 @@
 {
 	"require-dev": {
+		"liquipedia/sqllint": "*",
 		"mediawiki/mediawiki-codesniffer": "*",
 		"php-parallel-lint/php-parallel-lint": "*",
 		"php-parallel-lint/php-console-highlighter": "*"
 	},
 	"scripts": {
-		"test": [
-			"parallel-lint --colors --exclude vendor .",
+		"lint": [
+			"parallel-lint --colors --exclude vendor ."
+		],
+		"phpcs": [
 			"phpcs -p -s"
+		],
+		"sqllint": [
+			"sqllint"
+		],
+		"test": [
+			"composer lint",
+			"composer phpcs",
+			"composer sqllint"
 		],
 		"fix": "phpcbf"
 	}
