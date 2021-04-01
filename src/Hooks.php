@@ -6,6 +6,9 @@ use Language;
 
 class Hooks {
 
+	/**
+	 * @var array
+	 */
 	private static $messageCache = [];
 
 	/**
