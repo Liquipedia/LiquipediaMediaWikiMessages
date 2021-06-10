@@ -4,6 +4,7 @@ namespace Liquipedia\LiquipediaMediaWikiMessages;
 
 use HTMLForm;
 use ManualLogEntry;
+use MediaWiki\MediaWikiServices;
 use SpecialPage;
 
 class SpecialLiquipediaMediaWikiMessages extends SpecialPage {
@@ -210,11 +211,9 @@ class SpecialLiquipediaMediaWikiMessages extends SpecialPage {
 	 * @param array $formData
 	 */
 	public function editMessageCB( $formData ) {
-		$dbw = wfGetDB( DB_MASTER, '', $this->getConfig()->get( 'DBname' ) );
-		$tablename = 'liquipedia_mediawiki_messages';
 		$id = $formData[ 'MessageId' ];
 		$reqValue = $formData[ 'MessageValue' ];
-		$dbw->update( $tablename, [ 'messagevalue' => $reqValue ], [ 'id' => $id ] );
+		$this->update( $id, $reqValue );
 		$this->output->addWikiText(
 			'<div class="alert alert-success">'
 			. $this->msg( 'liquipediamediawikimessages-edit-message-success' )->text()
@@ -293,13 +292,7 @@ class SpecialLiquipediaMediaWikiMessages extends SpecialPage {
 	 */
 	public function deleteMessageCB( $formData ) {
 		$id = $formData[ 'MessageId' ];
-		$tablename = 'liquipedia_mediawiki_messages';
-		$dbw = wfGetDB( DB_MASTER, '', $this->getConfig()->get( 'DBname' ) );
-		$message = $dbw->select( $tablename, '*', [ 'id' => $id ] )->fetchObject();
-		if ( $message !== null ) {
-
-		}
-		$dbw->delete( $tablename, [ 'id' => $id ] );
+		$this->delete( $id );
 		$this->output->addWikiText(
 			'<div class="alert alert-success">'
 			. $this->msg( 'liquipediamediawikimessages-delete-message-success' )->text()
@@ -314,6 +307,45 @@ class SpecialLiquipediaMediaWikiMessages extends SpecialPage {
 		$logEntry->setComment( 'Deleted message: ' . $formData[ 'HiddenMessageName' ] );
 		$logid = $logEntry->insert();
 		$logEntry->publish( $logid );
+	}
+
+	/**
+	 * @param int $id
+	 * @param string $value
+	 */
+	private function update( $id, $value ) {
+		$dbw = wfGetDB( DB_MASTER, '', $this->getConfig()->get( 'DBname' ) );
+		$tablename = 'liquipedia_mediawiki_messages';
+		$name = $dbw->select( $tablename, [ 'id' => $id ] )->fetchObject()->messagename;
+
+		$dbw->update( $tablename, [ 'messagevalue' => $value ], [ 'id' => $id ] );
+		$this->deleteFromCache( $name );
+	}
+
+	/**
+	 * @param int $id
+	 */
+	private function delete( $id ) {
+		$dbw = wfGetDB( DB_MASTER, '', $this->getConfig()->get( 'DBname' ) );
+		$tablename = 'liquipedia_mediawiki_messages';
+		$name = $dbw->select( $tablename, [ 'id' => $id ] )->fetchObject()->messagename;
+
+		$dbw->delete( $tablename, [ 'id' => $id ] );
+		$this->deleteFromCache( $name );
+	}
+
+	/**
+	 * @param string $name
+	 */
+	private function deleteFromCache( $name ) {
+		// Remove cached value
+		$mediaWikiServices = MediaWikiServices::getInstance();
+		$cache = $mediaWikiServices->getLocalServerObjectCache();
+		$cache->delete(
+			$cache->makeKey(
+				Cache::getPrefix(), md5( $name )
+			),
+		);
 	}
 
 }
