@@ -20,26 +20,26 @@ class Cache {
 			return self::$valueCache[ $name ][ 'value' ];
 		}
 		$mediaWikiServices = MediaWikiServices::getInstance();
-		$cache = $mediaWikiServices->getMainWANObjectCache();
 		$config = $mediaWikiServices->getMainConfig();
+		$cache = $mediaWikiServices->getLocalServerObjectCache();
 		$result = $cache->getWithSetCallback(
 			$cache->makeKey(
 				'lpmm_', md5( $name )
 			),
 			$config->get( 'MsgCacheExpiry' ),
 			function () use ( $config, $name ) {
-			$dbr = wfGetDB( DB_REPLICA, '', $config->get( 'DBname' ) );
-			$res = $dbr->select(
-				'liquipedia_mediawiki_messages',
-				[ 'messagevalue' ],
-				[ 'messagename' => $name ]
-			);
-			if ( $res->numRows() === 1 ) {
-				$obj = $res->fetchObject();
-				return [ 'value' => $obj->messagevalue ];
-			}
-			$res->free();
-			return [ 'value' => false ];
+				$dbr = wfGetDB( DB_REPLICA, '', $config->get( 'DBname' ) );
+				$res = $dbr->select(
+					'liquipedia_mediawiki_messages',
+					[ 'messagevalue' ],
+					[ 'messagename' => $name ]
+				);
+				if ( $res->numRows() === 1 ) {
+					$obj = $res->fetchObject();
+					return [ 'value' => $obj->messagevalue ];
+				}
+				$res->free();
+				return [ 'value' => false ];
 			}
 		);
 		self::$valueCache[ $name ] = $result;
