@@ -7,6 +7,13 @@ use MediaWiki\MediaWikiServices;
 class Cache {
 
 	/**
+	 * @return string
+	 */
+	public function getPrefix() {
+		return 'lpmm_';
+	}
+
+	/**
 	 * @var array
 	 */
 	private static $valueCache = [];
@@ -24,7 +31,7 @@ class Cache {
 		$cache = $mediaWikiServices->getLocalServerObjectCache();
 		$result = $cache->getWithSetCallback(
 			$cache->makeKey(
-				'lpmm_', md5( $name )
+				self::getPrefix(), md5( $name )
 			),
 			$cache::TTL_DAY,
 			static function () use ( $config, $name ) {
