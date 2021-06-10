@@ -27,7 +27,7 @@ class Cache {
 				'lpmm_', md5( $name )
 			),
 			$config->get( 'MsgCacheExpiry' ),
-			function () use ( $config, $name ) {
+			static function () use ( $config, $name ) {
 				$dbr = wfGetDB( DB_REPLICA, '', $config->get( 'DBname' ) );
 				$res = $dbr->select(
 					'liquipedia_mediawiki_messages',
