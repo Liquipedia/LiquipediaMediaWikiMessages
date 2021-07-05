@@ -9,7 +9,7 @@ class Cache {
 	/**
 	 * @return string
 	 */
-	public function getPrefix() {
+	public static function getPrefix() {
 		return 'lpmm_';
 	}
 

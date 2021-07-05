@@ -214,7 +214,7 @@ class SpecialLiquipediaMediaWikiMessages extends SpecialPage {
 		$id = $formData[ 'MessageId' ];
 		$reqValue = $formData[ 'MessageValue' ];
 		$this->update( $id, $reqValue );
-		$this->output->addWikiText(
+		$this->output->addWikiTextAsContent(
 			'<div class="alert alert-success">'
 			. $this->msg( 'liquipediamediawikimessages-edit-message-success' )->text()
 			. '</div>'
@@ -316,7 +316,7 @@ class SpecialLiquipediaMediaWikiMessages extends SpecialPage {
 	private function update( $id, $value ) {
 		$dbw = wfGetDB( DB_MASTER, '', $this->getConfig()->get( 'DBname' ) );
 		$tablename = 'liquipedia_mediawiki_messages';
-		$name = $dbw->select( $tablename, [ 'id' => $id ] )->fetchObject()->messagename;
+		$name = $dbw->select( $tablename, 'messagename', [ 'id' => $id ] )->fetchObject()->messagename;
 
 		$dbw->update( $tablename, [ 'messagevalue' => $value ], [ 'id' => $id ] );
 		$this->deleteFromCache( $name );
