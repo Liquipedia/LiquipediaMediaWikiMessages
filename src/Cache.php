@@ -30,7 +30,7 @@ class Cache {
 		$config = $mediaWikiServices->getMainConfig();
 		$cache = $mediaWikiServices->getLocalServerObjectCache();
 		$result = $cache->getWithSetCallback(
-			$cache->makeKey(
+			$cache->makeGlobalKey(
 				self::getPrefix(), md5( $name )
 			),
 			$cache::TTL_DAY,

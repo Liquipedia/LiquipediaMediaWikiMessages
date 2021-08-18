@@ -342,7 +342,7 @@ class SpecialLiquipediaMediaWikiMessages extends SpecialPage {
 		$mediaWikiServices = MediaWikiServices::getInstance();
 		$cache = $mediaWikiServices->getLocalServerObjectCache();
 		$cache->delete(
-			$cache->makeKey(
+			$cache->makeGlobalKey(
 				Cache::getPrefix(), md5( $name )
 			),
 		);
