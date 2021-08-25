@@ -340,7 +340,7 @@ class SpecialLiquipediaMediaWikiMessages extends SpecialPage {
 	private function deleteFromCache( $name ) {
 		// Remove cached value
 		$mediaWikiServices = MediaWikiServices::getInstance();
-		$cache = $mediaWikiServices->getLocalServerObjectCache();
+		$cache = $mediaWikiServices->getMainWANObjectCache();
 		$cache->delete(
 			$cache->makeGlobalKey(
 				Cache::getPrefix(), md5( $name )
