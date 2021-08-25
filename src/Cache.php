@@ -28,7 +28,7 @@ class Cache {
 		}
 		$mediaWikiServices = MediaWikiServices::getInstance();
 		$config = $mediaWikiServices->getMainConfig();
-		$cache = $mediaWikiServices->getLocalServerObjectCache();
+		$cache = $mediaWikiServices->getMainWANObjectCache();
 		$result = $cache->getWithSetCallback(
 			$cache->makeGlobalKey(
 				self::getPrefix(), md5( $name )
