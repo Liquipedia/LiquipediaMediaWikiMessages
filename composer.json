@@ -2,6 +2,7 @@
 	"require-dev": {
 		"liquipedia/sqllint": "*",
 		"mediawiki/mediawiki-codesniffer": "*",
+		"mediawiki/minus-x": "*",
 		"php-parallel-lint/php-parallel-lint": "*",
 		"php-parallel-lint/php-console-highlighter": "*"
 	},
@@ -15,11 +16,18 @@
 		"sqllint": [
 			"sqllint"
 		],
+		"minus-x": [
+			"minus-x check ."
+		],
 		"test": [
+			"composer minus-x",
 			"composer lint",
 			"composer phpcs",
 			"composer sqllint"
 		],
-		"fix": "phpcbf"
+		"fix": [
+			"minus-x fix .",
+			"phpcbf"
+		]
 	}
 }
