@@ -1,8 +1,9 @@
 <?php
 
-namespace Liquipedia\LiquipediaMediaWikiMessages;
+namespace Liquipedia\Extension\LiquipediaMediaWikiMessages\SpecialPage;
 
 use HTMLForm;
+use Liquipedia\Extension\LiquipediaMediaWikiMessages\Cache;
 use ManualLogEntry;
 use MediaWiki\MediaWikiServices;
 use SpecialPage;
@@ -37,7 +38,7 @@ class SpecialLiquipediaMediaWikiMessages extends SpecialPage {
 		$params = explode( '/', $par );
 		$this->output = $this->getOutput();
 		$this->setHeaders();
-		$dbw = wfGetDB( DB_MASTER, '', $this->getConfig()->get( 'DBname' ) );
+		$dbw = wfGetDB( DB_PRIMARY, '', $this->getConfig()->get( 'DBname' ) );
 		if ( $params[ 0 ] === 'new' ) {
 			$this->addMessage();
 		} elseif ( ( $params[ 0 ] === 'edit' ) && isset( $params[ 1 ] ) && !empty( $params[ 1 ] ) ) {
@@ -112,7 +113,7 @@ class SpecialLiquipediaMediaWikiMessages extends SpecialPage {
 	 */
 	public function addMessageCB( $formData ) {
 		if ( !empty( $formData[ 'MessageName' ] ) && !empty( $formData[ 'MessageValue' ] ) ) {
-			$dbw = wfGetDB( DB_MASTER, '', $this->getConfig()->get( 'DBname' ) );
+			$dbw = wfGetDB( DB_PRIMARY, '', $this->getConfig()->get( 'DBname' ) );
 			$reqMessage = $formData[ 'MessageName' ];
 			$reqValue = $formData[ 'MessageValue' ];
 			$tablename = 'liquipedia_mediawiki_messages';
@@ -164,7 +165,7 @@ class SpecialLiquipediaMediaWikiMessages extends SpecialPage {
 		$this->output->addWikiTextAsContent(
 			'<h2>' . $this->msg( 'liquipediamediawikimessages-edit-message' )->text() . '</h2>'
 		);
-		$dbw = wfGetDB( DB_MASTER, '', $this->getConfig()->get( 'DBname' ) );
+		$dbw = wfGetDB( DB_PRIMARY, '', $this->getConfig()->get( 'DBname' ) );
 		$tablename = 'liquipedia_mediawiki_messages';
 		$res = $dbw->selectRow( $tablename, '*', [ 'id' => $id ] );
 		if ( $res ) {
@@ -238,7 +239,7 @@ class SpecialLiquipediaMediaWikiMessages extends SpecialPage {
 			'<h2>' . $this->msg( 'liquipediamediawikimessages-delete-message' )->text() . '</h2>'
 		);
 		$tablename = 'liquipedia_mediawiki_messages';
-		$dbw = wfGetDB( DB_MASTER, '', $this->getConfig()->get( 'DBname' ) );
+		$dbw = wfGetDB( DB_PRIMARY, '', $this->getConfig()->get( 'DBname' ) );
 		$res = $dbw->selectRow( $tablename, '*', [ 'id' => $id ] );
 		if ( $res ) {
 			$result = get_object_vars( $res );
@@ -314,7 +315,7 @@ class SpecialLiquipediaMediaWikiMessages extends SpecialPage {
 	 * @param string $value
 	 */
 	private function update( $id, $value ) {
-		$dbw = wfGetDB( DB_MASTER, '', $this->getConfig()->get( 'DBname' ) );
+		$dbw = wfGetDB( DB_PRIMARY, '', $this->getConfig()->get( 'DBname' ) );
 		$tablename = 'liquipedia_mediawiki_messages';
 		$name = $dbw->select( $tablename, 'messagename', [ 'id' => $id ] )->fetchObject()->messagename;
 
@@ -326,7 +327,7 @@ class SpecialLiquipediaMediaWikiMessages extends SpecialPage {
 	 * @param int $id
 	 */
 	private function delete( $id ) {
-		$dbw = wfGetDB( DB_MASTER, '', $this->getConfig()->get( 'DBname' ) );
+		$dbw = wfGetDB( DB_PRIMARY, '', $this->getConfig()->get( 'DBname' ) );
 		$tablename = 'liquipedia_mediawiki_messages';
 		$name = $dbw->select( $tablename, [ 'id' => $id ] )->fetchObject()->messagename;
 

@@ -1,6 +1,6 @@
 {
 	"name": "LiquipediaMediaWikiMessages",
-	"version": "2.2.0",
+	"version": "2.3.0",
 	"author": [
 		"[https://fo-nttax.de Alex Winkler]"
 	],
@@ -9,7 +9,7 @@
 	"license-name": "MIT",
 	"type": "specialpage",
 	"requires": {
-		"MediaWiki": ">= 1.35.0"
+		"MediaWiki": ">= 1.35.3"
 	},
 	"MessagesDirs": {
 		"LiquipediaMediaWikiMessages": [
@@ -17,7 +17,7 @@
 		]
 	},
 	"LogActionsHandlers": {
-		"liquipediamediawikimessages/*": "Liquipedia\\LiquipediaMediaWikiMessages\\LogFormatter"
+		"liquipediamediawikimessages/*": "\\Liquipedia\\Extension\\LiquipediaMediaWikiMessages\\LogFormatter"
 	},
 	"LogTypes": [
 		"liquipediamediawikimessages"
@@ -26,19 +26,22 @@
 		"LiquipediaMediaWikiMessagesAlias": "i18n/LiquipediaMediaWikiMessagesAlias.php"
 	},
 	"AutoloadNamespaces": {
-		"Liquipedia\\LiquipediaMediaWikiMessages\\": "src/"
+		"Liquipedia\\Extension\\LiquipediaMediaWikiMessages\\": "src/"
+	},
+	"HookHandlers": {
+		"Main": {
+			"class": "\\Liquipedia\\Extension\\LiquipediaMediaWikiMessages\\Hooks\\MainHookHandler"
+		}
 	},
 	"Hooks": {
-		"MessagesPreLoad": [
-			"Liquipedia\\LiquipediaMediaWikiMessages\\Hooks::onMessagesPreLoad"
-		]
+		"MessagesPreLoad": "Main"
 	},
 	"SpecialPages": {
-		"LiquipediaMediaWikiMessages": "Liquipedia\\LiquipediaMediaWikiMessages\\SpecialLiquipediaMediaWikiMessages"
+		"LiquipediaMediaWikiMessages": "\\Liquipedia\\Extension\\LiquipediaMediaWikiMessages\\SpecialPage\\SpecialLiquipediaMediaWikiMessages"
 	},
 	"ResourceFileModulePaths": {
 		"localBasePath": "",
 		"remoteExtPath": "LiquipediaMediaWikiMessages"
 	},
-	"manifest_version": 1
+	"manifest_version": 2
 }

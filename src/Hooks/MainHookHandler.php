@@ -1,17 +1,21 @@
 <?php
 
-namespace Liquipedia\LiquipediaMediaWikiMessages;
+namespace Liquipedia\Extension\LiquipediaMediaWikiMessages\Hooks;
 
 use Language;
+use Liquipedia\Extension\LiquipediaMediaWikiMessages\Cache;
+use MediaWiki\Cache\Hook\MessagesPreLoadHook;
 
-class Hooks {
+class MainHookHandler implements
+	MessagesPreLoadHook
+{
 
 	/**
 	 * @param Title $title
 	 * @param string &$message
 	 * @param string $code
 	 */
-	public static function onMessagesPreLoad( $title, &$message, $code ) {
+	public function onMessagesPreLoad( $title, &$message, $code ) {
 		if ( $code === 'qqx' ) {
 			return;
 		}

@@ -1,6 +1,6 @@
 <?php
 
-namespace Liquipedia\LiquipediaMediaWikiMessages;
+namespace Liquipedia\Extension\LiquipediaMediaWikiMessages;
 
 class LogFormatter extends \LogFormatter {
 
