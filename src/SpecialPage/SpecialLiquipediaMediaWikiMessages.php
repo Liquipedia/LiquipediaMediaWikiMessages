@@ -119,6 +119,7 @@ class SpecialLiquipediaMediaWikiMessages extends SpecialPage {
 			$tablename = 'liquipedia_mediawiki_messages';
 			try {
 				$dbw->insert( $tablename, [ 'messagename' => $reqMessage, 'messagevalue' => $reqValue ] );
+				$this->deleteFromCache( $reqMessage );
 				$this->output->addWikiTextAsContent(
 					'<div class="alert alert-success">'
 					. $this->msg( 'liquipediamediawikimessages-add-new-message-success' )->text()
@@ -133,9 +134,6 @@ class SpecialLiquipediaMediaWikiMessages extends SpecialPage {
 				$logEntry->setComment( 'Added message: ' . $formData[ 'MessageName' ] );
 				$logid = $logEntry->insert();
 				$logEntry->publish( $logid );
-
-				$reqMessage = '';
-				$reqValue = '';
 			} catch ( \Exception $e ) {
 				if ( $e->getCode() == 23000 ) {
 					$this->output->addWikiTextAsContent(
