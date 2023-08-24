@@ -35,7 +35,7 @@ class SpecialLiquipediaMediaWikiMessages extends SpecialPage {
 			return;
 		}
 		$tablename = 'liquipedia_mediawiki_messages';
-		$params = explode( '/', $par );
+		$params = explode( '/', $par ?? '' );
 		$this->output = $this->getOutput();
 		$this->setHeaders();
 		$dbw = wfGetDB( DB_PRIMARY, '', $this->getConfig()->get( 'DBname' ) );
