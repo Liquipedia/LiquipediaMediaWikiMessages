@@ -1,6 +1,6 @@
 {
 	"name": "LiquipediaMediaWikiMessages",
-	"version": "2.3.1",
+	"version": "2.3.2",
 	"author": [
 		"[https://fo-nttax.de Alex Winkler]"
 	],
@@ -19,6 +19,9 @@
 	"LogActionsHandlers": {
 		"liquipediamediawikimessages/*": "\\Liquipedia\\Extension\\LiquipediaMediaWikiMessages\\LogFormatter"
 	},
+	"APIModules": {
+		"updatelpmwmessageapi": "\\Liquipedia\\Extension\\LiquipediaMediaWikiMessages\\Api\\UpdateMessageApiModule"
+	},
 	"LogTypes": [
 		"liquipediamediawikimessages"
 	],
@@ -30,14 +33,24 @@
 	},
 	"HookHandlers": {
 		"Main": {
-			"class": "\\Liquipedia\\Extension\\LiquipediaMediaWikiMessages\\Hooks\\MainHookHandler"
+			"class": "\\Liquipedia\\Extension\\LiquipediaMediaWikiMessages\\Hooks\\MainHookHandler",
+			"services": [
+				"PermissionManager"
+			]
 		}
 	},
 	"Hooks": {
+		"ApiCheckCanExecute": "Main",
 		"MessagesPreLoad": "Main"
 	},
 	"SpecialPages": {
-		"LiquipediaMediaWikiMessages": "\\Liquipedia\\Extension\\LiquipediaMediaWikiMessages\\SpecialPage\\SpecialLiquipediaMediaWikiMessages"
+		"LiquipediaMediaWikiMessages": {
+			"class": "\\Liquipedia\\Extension\\LiquipediaMediaWikiMessages\\SpecialPage\\SpecialLiquipediaMediaWikiMessages",
+			"services": [
+				"MainConfig",
+				"DBLoadBalancer"
+			]
+		}
 	},
 	"ResourceFileModulePaths": {
 		"localBasePath": "",

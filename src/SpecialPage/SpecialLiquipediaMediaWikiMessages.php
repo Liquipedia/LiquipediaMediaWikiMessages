@@ -2,11 +2,13 @@
 
 namespace Liquipedia\Extension\LiquipediaMediaWikiMessages\SpecialPage;
 
+use Config;
 use HTMLForm;
 use Liquipedia\Extension\LiquipediaMediaWikiMessages\Cache;
 use ManualLogEntry;
 use MediaWiki\MediaWikiServices;
 use SpecialPage;
+use Wikimedia\Rdbms\ILoadBalancer;
 
 class SpecialLiquipediaMediaWikiMessages extends SpecialPage {
 
@@ -15,8 +17,26 @@ class SpecialLiquipediaMediaWikiMessages extends SpecialPage {
 	 */
 	private $output;
 
-	public function __construct() {
+	/**
+	 *
+	 * @var Config
+	 */
+	private $config;
+
+	/**
+	 * @var ILoadBalancer
+	 */
+	private $loadBalancer;
+
+	/**
+	 *
+	 * @param Config $config
+	 * @param ILoadBalancer $loadBalancer
+	 */
+	public function __construct( Config $config, ILoadBalancer $loadBalancer ) {
 		parent::__construct( 'LiquipediaMediaWikiMessages', 'editinterface' );
+		$this->config = $config;
+		$this->loadBalancer = $loadBalancer;
 	}
 
 	/**
@@ -32,13 +52,12 @@ class SpecialLiquipediaMediaWikiMessages extends SpecialPage {
 	public function execute( $par ) {
 		if ( !$this->userCanExecute( $this->getUser() ) ) {
 			$this->displayRestrictionError();
-			return;
 		}
 		$tablename = 'liquipedia_mediawiki_messages';
 		$params = explode( '/', $par ?? '' );
 		$this->output = $this->getOutput();
 		$this->setHeaders();
-		$dbw = wfGetDB( DB_PRIMARY, '', $this->getConfig()->get( 'DBname' ) );
+		$dbw = $this->loadBalancer->getConnection( DB_PRIMARY, '', $this->config->get( 'DBname' ) );
 		if ( $params[ 0 ] === 'new' ) {
 			$this->addMessage();
 		} elseif ( ( $params[ 0 ] === 'edit' ) && isset( $params[ 1 ] ) && !empty( $params[ 1 ] ) ) {
@@ -113,7 +132,7 @@ class SpecialLiquipediaMediaWikiMessages extends SpecialPage {
 	 */
 	public function addMessageCB( $formData ) {
 		if ( !empty( $formData[ 'MessageName' ] ) && !empty( $formData[ 'MessageValue' ] ) ) {
-			$dbw = wfGetDB( DB_PRIMARY, '', $this->getConfig()->get( 'DBname' ) );
+			$dbw = $this->loadBalancer->getConnection( DB_PRIMARY, '', $this->config->get( 'DBname' ) );
 			$reqMessage = $formData[ 'MessageName' ];
 			$reqValue = $formData[ 'MessageValue' ];
 			$tablename = 'liquipedia_mediawiki_messages';
@@ -163,7 +182,7 @@ class SpecialLiquipediaMediaWikiMessages extends SpecialPage {
 		$this->output->addWikiTextAsContent(
 			'<h2>' . $this->msg( 'liquipediamediawikimessages-edit-message' )->text() . '</h2>'
 		);
-		$dbw = wfGetDB( DB_PRIMARY, '', $this->getConfig()->get( 'DBname' ) );
+		$dbw = $this->loadBalancer->getConnection( DB_PRIMARY, '', $this->config->get( 'DBname' ) );
 		$tablename = 'liquipedia_mediawiki_messages';
 		$res = $dbw->selectRow( $tablename, '*', [ 'id' => $id ] );
 		if ( $res ) {
@@ -237,7 +256,7 @@ class SpecialLiquipediaMediaWikiMessages extends SpecialPage {
 			'<h2>' . $this->msg( 'liquipediamediawikimessages-delete-message' )->text() . '</h2>'
 		);
 		$tablename = 'liquipedia_mediawiki_messages';
-		$dbw = wfGetDB( DB_PRIMARY, '', $this->getConfig()->get( 'DBname' ) );
+		$dbw = $this->loadBalancer->getConnection( DB_PRIMARY, '', $this->config->get( 'DBname' ) );
 		$res = $dbw->selectRow( $tablename, '*', [ 'id' => $id ] );
 		if ( $res ) {
 			$result = get_object_vars( $res );
@@ -313,7 +332,7 @@ class SpecialLiquipediaMediaWikiMessages extends SpecialPage {
 	 * @param string $value
 	 */
 	private function update( $id, $value ) {
-		$dbw = wfGetDB( DB_PRIMARY, '', $this->getConfig()->get( 'DBname' ) );
+		$dbw = $this->loadBalancer->getConnection( DB_PRIMARY, '', $this->config->get( 'DBname' ) );
 		$tablename = 'liquipedia_mediawiki_messages';
 		$name = $dbw->select( $tablename, 'messagename', [ 'id' => $id ] )->fetchObject()->messagename;
 
@@ -325,7 +344,7 @@ class SpecialLiquipediaMediaWikiMessages extends SpecialPage {
 	 * @param int $id
 	 */
 	private function delete( $id ) {
-		$dbw = wfGetDB( DB_PRIMARY, '', $this->getConfig()->get( 'DBname' ) );
+		$dbw = $this->loadBalancer->getConnection( DB_PRIMARY, '', $this->config->get( 'DBname' ) );
 		$tablename = 'liquipedia_mediawiki_messages';
 		$name = $dbw->select( $tablename, [ 'id' => $id ] )->fetchObject()->messagename;
 
