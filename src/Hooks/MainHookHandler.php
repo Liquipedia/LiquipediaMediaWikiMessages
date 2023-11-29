@@ -4,11 +4,47 @@ namespace Liquipedia\Extension\LiquipediaMediaWikiMessages\Hooks;
 
 use Language;
 use Liquipedia\Extension\LiquipediaMediaWikiMessages\Cache;
+use MediaWiki\Api\Hook\ApiCheckCanExecuteHook;
 use MediaWiki\Cache\Hook\MessagesPreLoadHook;
+use MediaWiki\Permissions\PermissionManager;
 
 class MainHookHandler implements
+	ApiCheckCanExecuteHook,
 	MessagesPreLoadHook
 {
+
+	/**
+	 * @var PermissionManager
+	 */
+	private PermissionManager $permissionManager;
+
+	/**
+	 * @param PermissionManager $permissionManager
+	 */
+	public function __construct(
+		PermissionManager $permissionManager
+	) {
+		$this->permissionManager = $permissionManager;
+	}
+
+	/**
+	 * @param Module $module
+	 * @param User $user
+	 * @param Message &$message
+	 *
+	 * @return bool
+	 */
+	public function onApiCheckCanExecute( $module, $user, &$message ) {
+		$moduleName = $module->getModuleName();
+		$userRights = $this->permissionManager->getUserPermissions( $user );
+		if (
+			$moduleName === 'updatelpmwmessageapi' && !in_array( 'editinterface', $userRights )
+		) {
+			$message = 'updatelpmwmessageapi-action-notallowed';
+			return false;
+		}
+		return true;
+	}
 
 	/**
 	 * @param Title $title

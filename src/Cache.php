@@ -29,24 +29,25 @@ class Cache {
 		$mediaWikiServices = MediaWikiServices::getInstance();
 		$config = $mediaWikiServices->getMainConfig();
 		$cache = $mediaWikiServices->getMainWANObjectCache();
+		$loadBalancer = $mediaWikiServices->getDBLoadBalancer();
 		$result = $cache->getWithSetCallback(
 			$cache->makeGlobalKey(
 				self::getPrefix(), md5( $name )
 			),
 			$cache::TTL_DAY,
-			static function () use ( $config, $name ) {
-			$dbr = wfGetDB( DB_REPLICA, '', $config->get( 'DBname' ) );
-			$res = $dbr->select(
-				'liquipedia_mediawiki_messages',
-				[ 'messagevalue' ],
-				[ 'messagename' => $name ]
-			);
-			if ( $res->numRows() === 1 ) {
-				$obj = $res->fetchObject();
-				return [ 'value' => $obj->messagevalue ];
-			}
-			$res->free();
-			return [ 'value' => false ];
+			static function () use ( $config, $name, $loadBalancer ) {
+				$dbr = $loadBalancer->getConnection( DB_REPLICA, '', $config->get( 'DBname' ) );
+				$res = $dbr->select(
+					'liquipedia_mediawiki_messages',
+					[ 'messagevalue' ],
+					[ 'messagename' => $name ]
+				);
+				if ( $res->numRows() === 1 ) {
+					$obj = $res->fetchObject();
+					return [ 'value' => $obj->messagevalue ];
+				}
+				$res->free();
+				return [ 'value' => false ];
 			}
 		);
 		self::$valueCache[ $name ] = $result;

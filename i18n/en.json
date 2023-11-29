@@ -38,6 +38,14 @@
 	"liquipediamediawikimessages-column-edit": "Edit",
 	"liquipediamediawikimessages-column-delete": "Delete",
 
+	"apihelp-updatelpmwmessageapi-summary": "API Helper to update LiquipediaMediaWikiMessages message values",
+	"liquipediamediawikimessages-api-message-name": "Message name to update the value for",
+	"liquipediamediawikimessages-api-message-value": "Value for the particular message defined before",
+	"liquipediamediawikimessages-api-example": "Example:",
+	"liquipediamediawikimessages-api-result-error": "No message with this message name found",
+	"liquipediamediawikimessages-api-result-success": "Successfully changed the message value",
+	"updatelpmwmessageapi-action-notallowed": "You are not allowed to update LiquipediaMediaWikiMessages",
+
 	"log-name-liquipediamediawikimessages": "LiquipediaMediaWikiMessages log",
 	"log-description-liquipediamediawikimessages": "These events track when someone globally overwrite message keys for all Liquipedia wikis",
 	"logentry-liquipediamediawikimessages-added": "$1 added message \"$4\" via $3",
