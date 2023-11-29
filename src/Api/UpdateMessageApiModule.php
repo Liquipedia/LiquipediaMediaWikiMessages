@@ -13,8 +13,10 @@ class UpdateMessageApiModule extends ApiBase {
 	 *
 	 */
 	public function execute() {
-		$messageName = $this->getRequest()->getText( 'messagename' );
-		$value = $this->getRequest()->getText( 'value' );
+		$postValues = $this->getRequest()->getPostValues();
+		$messageName = $postValues[ 'messagename' ];
+		$value = $postValues[ 'value' ];
+
 		$services = MediaWikiServices::getInstance();
 		$loadBalancer = $services->getDBLoadBalancer();
 
@@ -44,6 +46,13 @@ class UpdateMessageApiModule extends ApiBase {
 		$this->getResult()->addValue( null, $this->getModuleName(), [
 			'message' => $this->msg( 'liquipediamediawikimessages-api-result-success' )
 		] );
+	}
+
+	/**
+	 * @return true
+	 */
+	public function mustBePosted() {
+		return true;
 	}
 
 	/**
