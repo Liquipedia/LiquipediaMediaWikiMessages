@@ -74,7 +74,7 @@ class UpdateMessageApiModule extends ApiBase {
 	 */
 	public function getExamplesMessages() {
 		return [
-			'action=updatelpmwmessageapi&messagename=some_message_name&value=some_value&format=json'
+			'action=updatelpmwmessageapi&format=json'
 			=> 'liquipediamediawikimessages-api-example',
 		];
 	}
