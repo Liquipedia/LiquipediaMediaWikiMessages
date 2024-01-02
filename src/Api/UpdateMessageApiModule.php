@@ -14,6 +14,18 @@ class UpdateMessageApiModule extends ApiBase {
 	 */
 	public function execute() {
 		$postValues = $this->getRequest()->getPostValues();
+		if ( !array_key_exists( 'messagename', $postValues ) ) {
+			$this->getResult()->addValue( null, $this->getModuleName(), [
+				'message' => $this->msg( 'liquipediamediawikimessages-api-error-missing-messagename' )
+			] );
+			return;
+		}
+		if ( !array_key_exists( 'value', $postValues ) ) {
+			$this->getResult()->addValue( null, $this->getModuleName(), [
+				'message' => $this->msg( 'liquipediamediawikimessages-api-error-missing-value' )
+			] );
+			return;
+		}
 		$messageName = $postValues[ 'messagename' ];
 		$value = $postValues[ 'value' ];
 
