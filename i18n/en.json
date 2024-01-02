@@ -39,6 +39,8 @@
 	"liquipediamediawikimessages-column-delete": "Delete",
 
 	"apihelp-updatelpmwmessageapi-summary": "API Helper to update LiquipediaMediaWikiMessages message values",
+	"liquipediamediawikimessages-api-error-missing-messagename": "Missing parameter 'messagename'. It should be passed via POST",
+	"liquipediamediawikimessages-api-error-missing-value": "Missing parameter 'value'. It should be passed via POST",
 	"liquipediamediawikimessages-api-message-name": "Message name to update the value for",
 	"liquipediamediawikimessages-api-message-value": "Value for the particular message defined before",
 	"liquipediamediawikimessages-api-example": "Example:",
