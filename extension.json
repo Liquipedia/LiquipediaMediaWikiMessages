@@ -35,7 +35,8 @@
 		"Main": {
 			"class": "\\Liquipedia\\Extension\\LiquipediaMediaWikiMessages\\Hooks\\MainHookHandler",
 			"services": [
-				"PermissionManager"
+				"PermissionManager",
+				"LanguageFallback"
 			]
 		}
 	},
