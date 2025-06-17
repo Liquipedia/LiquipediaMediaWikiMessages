@@ -2,10 +2,10 @@
 
 namespace Liquipedia\Extension\LiquipediaMediaWikiMessages\Hooks;
 
-use Language;
 use Liquipedia\Extension\LiquipediaMediaWikiMessages\Cache;
 use MediaWiki\Api\Hook\ApiCheckCanExecuteHook;
 use MediaWiki\Cache\Hook\MessagesPreLoadHook;
+use MediaWiki\Languages\LanguageFallback;
 use MediaWiki\Permissions\PermissionManager;
 
 class MainHookHandler implements
@@ -19,12 +19,19 @@ class MainHookHandler implements
 	private PermissionManager $permissionManager;
 
 	/**
+	 * @var LanguageFallback
+	 */
+	private LanguageFallback $languageFallback;
+
+	/**
 	 * @param PermissionManager $permissionManager
 	 */
 	public function __construct(
-		PermissionManager $permissionManager
+		PermissionManager $permissionManager,
+		LanguageFallback $languageFallback
 	) {
 		$this->permissionManager = $permissionManager;
+		$this->languageFallback = $languageFallback;
 	}
 
 	/**
@@ -56,7 +63,7 @@ class MainHookHandler implements
 			return;
 		}
 		$bareTitle = str_replace( '/' . $code, '', $title );
-		$languages = Language::getFallbacksFor( $code );
+		$languages = $this->languageFallback->getAll( $code );
 		array_unshift( $languages, $code );
 		for ( $i = 0; $i <= count( $languages ); $i++ ) {
 			if ( $i < count( $languages ) ) {
