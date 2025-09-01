@@ -4,7 +4,6 @@ namespace Liquipedia\Extension\LiquipediaMediaWikiMessages\SpecialPage;
 
 use Config;
 use HTMLForm;
-use Liquipedia\Extension\LiquipediaMediaWikiMessages\Cache;
 use ManualLogEntry;
 use MediaWiki\MediaWikiServices;
 use SpecialPage;
@@ -138,7 +137,7 @@ class SpecialLiquipediaMediaWikiMessages extends SpecialPage {
 			$tablename = 'liquipedia_mediawiki_messages';
 			try {
 				$dbw->insert( $tablename, [ 'messagename' => $reqMessage, 'messagevalue' => $reqValue ] );
-				$this->deleteFromCache( $reqMessage );
+				$this->deleteFromCache( $reqMessage, $reqValue );
 				$this->output->addWikiTextAsContent(
 					'<div class="alert alert-success">'
 					. $this->msg( 'liquipediamediawikimessages-add-new-message-success' )->text()
@@ -337,7 +336,7 @@ class SpecialLiquipediaMediaWikiMessages extends SpecialPage {
 		$name = $dbw->select( $tablename, 'messagename', [ 'id' => $id ] )->fetchObject()->messagename;
 
 		$dbw->update( $tablename, [ 'messagevalue' => $value ], [ 'id' => $id ] );
-		$this->deleteFromCache( $name );
+		$this->deleteFromCache( $name, $value );
 	}
 
 	/**
@@ -349,21 +348,18 @@ class SpecialLiquipediaMediaWikiMessages extends SpecialPage {
 		$name = $dbw->select( $tablename, [ 'id' => $id ] )->fetchObject()->messagename;
 
 		$dbw->delete( $tablename, [ 'id' => $id ] );
-		$this->deleteFromCache( $name );
+		$this->deleteFromCache( $name, false );
 	}
 
 	/**
-	 * @param string $name
+	 * @param string $title
+	 * @param string|false $value
 	 */
-	private function deleteFromCache( $name ) {
+	private function deleteFromCache( $title, $value ) {
 		// Remove cached value
 		$mediaWikiServices = MediaWikiServices::getInstance();
-		$cache = $mediaWikiServices->getMainWANObjectCache();
-		$cache->delete(
-			$cache->makeGlobalKey(
-				Cache::getPrefix(), md5( $name )
-			),
-		);
+		$messageCache = $mediaWikiServices->getMessageCache();
+		$messageCache->replace( $title, $value );
 	}
 
 }

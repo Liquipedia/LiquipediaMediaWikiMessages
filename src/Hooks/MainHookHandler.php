@@ -2,16 +2,22 @@
 
 namespace Liquipedia\Extension\LiquipediaMediaWikiMessages\Hooks;
 
-use Liquipedia\Extension\LiquipediaMediaWikiMessages\Cache;
 use MediaWiki\Api\Hook\ApiCheckCanExecuteHook;
 use MediaWiki\Cache\Hook\MessagesPreLoadHook;
+use MediaWiki\Config\Config;
 use MediaWiki\Languages\LanguageFallback;
 use MediaWiki\Permissions\PermissionManager;
+use Wikimedia\Rdbms\ILoadBalancer;
 
 class MainHookHandler implements
 	ApiCheckCanExecuteHook,
 	MessagesPreLoadHook
 {
+
+	/**
+	 * @var Config
+	 */
+	private Config $config;
 
 	/**
 	 * @var PermissionManager
@@ -24,14 +30,26 @@ class MainHookHandler implements
 	private LanguageFallback $languageFallback;
 
 	/**
+	 * @var ILoadBalander
+	 */
+	private ILoadBalancer $loadBalancer;
+
+	/**
+	 * @param Config $config
 	 * @param PermissionManager $permissionManager
+	 * @param LanguageFallback $languageFallback
+	 * @param ILoadBalancer $loadBalancer
 	 */
 	public function __construct(
+		Config $config,
 		PermissionManager $permissionManager,
-		LanguageFallback $languageFallback
+		LanguageFallback $languageFallback,
+		ILoadBalancer $loadBalancer
 	) {
+		$this->config = $config;
 		$this->permissionManager = $permissionManager;
 		$this->languageFallback = $languageFallback;
+		$this->loadBalancer = $loadBalancer;
 	}
 
 	/**
@@ -54,7 +72,7 @@ class MainHookHandler implements
 	}
 
 	/**
-	 * @param Title $title
+	 * @param string $title
 	 * @param string &$message
 	 * @param string $code
 	 */
@@ -71,7 +89,18 @@ class MainHookHandler implements
 			} else {
 				$usedTitle = $bareTitle;
 			}
-			$value = Cache::getByName( $usedTitle );
+
+			$dbr = $this->loadBalancer->getConnection( DB_REPLICA, '', $this->config->get( 'DBname' ) );
+			$res = $dbr->select(
+				'liquipedia_mediawiki_messages',
+				[ 'messagevalue' ],
+				[ 'messagename' => $usedTitle ]
+			);
+			if ( $res->numRows() === 1 ) {
+				$obj = $res->fetchObject();
+				$value = $obj->messagevalue;
+			}
+
 			if ( $value ) {
 				$message = $value;
 				return;
