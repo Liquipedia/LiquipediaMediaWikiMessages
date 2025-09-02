@@ -96,6 +96,7 @@ class MainHookHandler implements
 				[ 'messagevalue' ],
 				[ 'messagename' => $usedTitle ]
 			);
+			$value = null;
 			if ( $res->numRows() === 1 ) {
 				$obj = $res->fetchObject();
 				$value = $obj->messagevalue;
