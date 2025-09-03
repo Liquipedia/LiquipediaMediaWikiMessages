@@ -3,9 +3,9 @@
 namespace Liquipedia\Extension\LiquipediaMediaWikiMessages\Api;
 
 use ApiBase;
+use Liquipedia\Extension\LiquipediaMediaWikiMessages\SpecialPage\SpecialLiquipediaMediaWikiMessages;
 use MediaWiki\MediaWikiServices;
 use Wikimedia\ParamValidator\ParamValidator;
-use Liquipedia\Extension\LiquipediaMediaWikiMessages\SpecialPage\SpecialLiquipediaMediaWikiMessages;
 
 class UpdateMessageApiModule extends ApiBase {
 
