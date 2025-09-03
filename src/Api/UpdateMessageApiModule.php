@@ -3,7 +3,7 @@
 namespace Liquipedia\Extension\LiquipediaMediaWikiMessages\Api;
 
 use ApiBase;
-use Liquipedia\Extension\LiquipediaMediaWikiMessages\Cache;
+use Liquipedia\Extension\LiquipediaMediaWikiMessages\SpecialPage\SpecialLiquipediaMediaWikiMessages;
 use MediaWiki\MediaWikiServices;
 use Wikimedia\ParamValidator\ParamValidator;
 
@@ -48,12 +48,7 @@ class UpdateMessageApiModule extends ApiBase {
 		$dbw->update( $tablename, [ 'messagevalue' => $value ], [ 'messagename' => $messageName ] );
 
 		// Delete from cache
-		$cache = $services->getMainWANObjectCache();
-		$cache->delete(
-			$cache->makeGlobalKey(
-				Cache::getPrefix(), md5( $messageName )
-			),
-		);
+		SpecialLiquipediaMediaWikiMessages::deleteFromCache( $messageName, $value );
 
 		$this->getResult()->addValue( null, $this->getModuleName(), [
 			'message' => $this->msg( 'liquipediamediawikimessages-api-result-success' )
