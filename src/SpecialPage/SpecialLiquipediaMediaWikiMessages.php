@@ -137,7 +137,7 @@ class SpecialLiquipediaMediaWikiMessages extends SpecialPage {
 			$tablename = 'liquipedia_mediawiki_messages';
 			try {
 				$dbw->insert( $tablename, [ 'messagename' => $reqMessage, 'messagevalue' => $reqValue ] );
-				$this->deleteFromCache( $reqMessage, $reqValue );
+				self::deleteFromCache( $reqMessage, $reqValue );
 				$this->output->addWikiTextAsContent(
 					'<div class="alert alert-success">'
 					. $this->msg( 'liquipediamediawikimessages-add-new-message-success' )->text()
@@ -336,7 +336,7 @@ class SpecialLiquipediaMediaWikiMessages extends SpecialPage {
 		$name = $dbw->select( $tablename, 'messagename', [ 'id' => $id ] )->fetchObject()->messagename;
 
 		$dbw->update( $tablename, [ 'messagevalue' => $value ], [ 'id' => $id ] );
-		$this->deleteFromCache( $name, $value );
+		self::deleteFromCache( $name, $value );
 	}
 
 	/**
@@ -348,14 +348,14 @@ class SpecialLiquipediaMediaWikiMessages extends SpecialPage {
 		$name = $dbw->select( $tablename, [ 'id' => $id ] )->fetchObject()->messagename;
 
 		$dbw->delete( $tablename, [ 'id' => $id ] );
-		$this->deleteFromCache( $name, false );
+		self::deleteFromCache( $name, false );
 	}
 
 	/**
 	 * @param string $title
 	 * @param string|false $value
 	 */
-	private function deleteFromCache( $title, $value ) {
+	public static function deleteFromCache( $title, $value ) {
 		// Remove cached value
 		$mediaWikiServices = MediaWikiServices::getInstance();
 		$messageCache = $mediaWikiServices->getMessageCache();
