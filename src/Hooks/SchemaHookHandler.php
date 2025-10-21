@@ -18,7 +18,10 @@ class SchemaHookHandler implements
 		$dbName = $config->get( 'DBname' );
 		$db = $updater->getDB();
 		if ( !$db->tableExists( $dbName . '.liquipedia_mediawiki_messages', __METHOD__ ) ) {
-			$updater->addExtensionTable( 'liquipedia_mediawiki_messages', __DIR__ . '/../../sql/liquipedia_mediawiki_messages.sql' );
+			$updater->addExtensionTable(
+				'liquipedia_mediawiki_messages',
+				__DIR__ . '/../../sql/liquipedia_mediawiki_messages.sql'
+			);
 		}
 	}
 
