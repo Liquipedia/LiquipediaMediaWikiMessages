@@ -47,8 +47,8 @@
 	},
 	"Hooks": {
 		"ApiCheckCanExecute": "Main",
-		"LoadExtensionSchemaUpdates": "Schema"
-		"MessagesPreLoad": "Main",
+		"LoadExtensionSchemaUpdates": "Schema",
+		"MessagesPreLoad": "Main"
 	},
 	"SpecialPages": {
 		"LiquipediaMediaWikiMessages": {
