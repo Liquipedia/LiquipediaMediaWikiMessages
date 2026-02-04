@@ -17,7 +17,6 @@ class SpecialLiquipediaMediaWikiMessages extends SpecialPage {
 	private $output;
 
 	/**
-	 *
 	 * @var Config
 	 */
 	private $config;
@@ -28,7 +27,6 @@ class SpecialLiquipediaMediaWikiMessages extends SpecialPage {
 	private $loadBalancer;
 
 	/**
-	 *
 	 * @param Config $config
 	 * @param ILoadBalancer $loadBalancer
 	 */

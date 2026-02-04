@@ -9,9 +9,6 @@ use Wikimedia\ParamValidator\ParamValidator;
 
 class UpdateMessageApiModule extends ApiBase {
 
-	/**
-	 *
-	 */
 	public function execute() {
 		$postValues = $this->getRequest()->getPostValues();
 		if ( !array_key_exists( 'messagename', $postValues ) ) {
@@ -51,7 +48,7 @@ class UpdateMessageApiModule extends ApiBase {
 		SpecialLiquipediaMediaWikiMessages::deleteFromCache( $messageName, $value );
 
 		$this->getResult()->addValue( null, $this->getModuleName(), [
-			'message' => $this->msg( 'liquipediamediawikimessages-api-result-success' )
+		'message' => $this->msg( 'liquipediamediawikimessages-api-result-success' )
 		] );
 	}
 
